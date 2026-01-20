@@ -6,6 +6,9 @@ $fn = 128;
 shelf_width = 84;
 shelf_depth = 170;
 
+// How the width and depth values should be interpreted
+dimension_type = "External"; // [External, Internal]
+
 /* [Snap Parameters] */
 
 // openGrid snap type for connecting to base plates.
@@ -25,13 +28,21 @@ snap_fitment = 0.66;
 shelf_thickness = 5;
 shelf_lip_height = 5;
 min_snaps = 1;
-max_snaps = floor(shelf_width/28);
+max_snaps = floor(actual_shelf_width/28);
 outer_face_outset = 3;
 outer_face_bottom = 3;
 outer_face_top = 5;
 lip_top_height = 8;
 lip_top_thickness = 2;
 tray_edge_inset = outer_face_outset + lip_top_thickness;
+
+// Calculate actual external dimensions based on dimension_type
+actual_shelf_width = (dimension_type == "Internal")
+    ? shelf_width + 2*tray_edge_inset
+    : shelf_width;
+actual_shelf_depth = (dimension_type == "Internal")
+    ? shelf_depth + 2*tray_edge_inset
+    : shelf_depth;
 
 module shelf_blank() {
     // The points are grouped by corner, starting with the southwest (bottom-left) corner
@@ -47,28 +58,28 @@ module shelf_blank() {
             [tray_edge_inset, tray_edge_inset, shelf_thickness], // SW corner of shelf top surface
             
             // NW corner
-            [outer_face_outset, shelf_depth, 0],
-            [0, shelf_depth-outer_face_outset, outer_face_bottom],
-            [0, shelf_depth-outer_face_outset, outer_face_top],
-            [outer_face_outset, shelf_depth, lip_top_height],
-            [lip_top_thickness, shelf_depth-lip_top_thickness, lip_top_height],
-            [tray_edge_inset, shelf_depth-tray_edge_inset, shelf_thickness],
-            
+            [outer_face_outset, actual_shelf_depth, 0],
+            [0, actual_shelf_depth-outer_face_outset, outer_face_bottom],
+            [0, actual_shelf_depth-outer_face_outset, outer_face_top],
+            [outer_face_outset, actual_shelf_depth, lip_top_height],
+            [lip_top_thickness, actual_shelf_depth-lip_top_thickness, lip_top_height],
+            [tray_edge_inset, actual_shelf_depth-tray_edge_inset, shelf_thickness],
+
             // NE corner
-            [shelf_width-outer_face_outset, shelf_depth, 0],
-            [shelf_width, shelf_depth-outer_face_outset, outer_face_bottom],
-            [shelf_width, shelf_depth-outer_face_outset, outer_face_top],
-            [shelf_width-outer_face_outset, shelf_depth, lip_top_height],
-            [shelf_width-lip_top_thickness, shelf_depth-lip_top_thickness, lip_top_height],
-            [shelf_width-tray_edge_inset, shelf_depth-tray_edge_inset, shelf_thickness],
-            
+            [actual_shelf_width-outer_face_outset, actual_shelf_depth, 0],
+            [actual_shelf_width, actual_shelf_depth-outer_face_outset, outer_face_bottom],
+            [actual_shelf_width, actual_shelf_depth-outer_face_outset, outer_face_top],
+            [actual_shelf_width-outer_face_outset, actual_shelf_depth, lip_top_height],
+            [actual_shelf_width-lip_top_thickness, actual_shelf_depth-lip_top_thickness, lip_top_height],
+            [actual_shelf_width-tray_edge_inset, actual_shelf_depth-tray_edge_inset, shelf_thickness],
+
             // SE corner
-            [shelf_width-outer_face_outset, outer_face_outset, 0],
-            [shelf_width, 0, outer_face_bottom],
-            [shelf_width, 0, outer_face_top],
-            [shelf_width-outer_face_outset, outer_face_outset, lip_top_height],
-            [shelf_width-lip_top_thickness, lip_top_thickness, lip_top_height],
-            [shelf_width-tray_edge_inset, tray_edge_inset, shelf_thickness]
+            [actual_shelf_width-outer_face_outset, outer_face_outset, 0],
+            [actual_shelf_width, 0, outer_face_bottom],
+            [actual_shelf_width, 0, outer_face_top],
+            [actual_shelf_width-outer_face_outset, outer_face_outset, lip_top_height],
+            [actual_shelf_width-lip_top_thickness, lip_top_thickness, lip_top_height],
+            [actual_shelf_width-tray_edge_inset, tray_edge_inset, shelf_thickness]
         ],
         faces = [
             [0, 6, 12, 18], // bottom face
@@ -441,9 +452,9 @@ module snap_chamfer() {
                 );
 };
 
-total_width = shelf_width;
+total_width = actual_shelf_width;
 
-cell_count = floor(shelf_width / cell_width);
+cell_count = floor(actual_shelf_width / cell_width);
 
 even_cell_count = (cell_count % 2 == 0) ? true : false;
 snap_count = (even_cell_count) ? floor(cell_count / 2) : floor(cell_count / 2) + 1;
@@ -451,11 +462,11 @@ even_snap_count = (snap_count % 2 == 0) ? true : false;
 gap_count = (even_cell_count) ? floor(cell_count / 2) - 1 : floor(cell_count/2);
 gap_width = cell_width;
 
-snap_remainder = shelf_width - (cell_count * cell_width);
+snap_remainder = actual_shelf_width - (cell_count * cell_width);
 outer_snap_offset = even_cell_count ? (snap_remainder + cell_width)/2 : snap_remainder / 2;
 
-union() { 
-    translate([-outer_snap_offset - snap_margin, snap_width/6, shelf_depth+full_snap_thickness])
+union() {
+    translate([-outer_snap_offset - snap_margin, snap_width/6, actual_shelf_depth+full_snap_thickness])
         rotate([-90, 0, 0])
             shelf_blank();
 
