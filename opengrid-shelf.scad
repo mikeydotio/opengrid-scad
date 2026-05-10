@@ -35,13 +35,16 @@ outer_face_top = 5;
 lip_top_height = 8;
 lip_top_thickness = 2;
 tray_edge_inset = outer_face_outset + lip_top_thickness;
+lip_wall_height = lip_top_height - shelf_thickness;
+tray_inner_inset = tray_edge_inset + lip_wall_height;
 
-// Calculate actual external dimensions based on dimension_type
+// "Internal" sizes shelf_width/shelf_depth as the tray bottom (the container's
+// usable footprint), so the outer dimensions add tray_inner_inset on each side.
 actual_shelf_width = (dimension_type == "Internal")
-    ? shelf_width + 2*tray_edge_inset
+    ? shelf_width + 2*tray_inner_inset
     : shelf_width;
 actual_shelf_depth = (dimension_type == "Internal")
-    ? shelf_depth + 2*tray_edge_inset
+    ? shelf_depth + 2*tray_inner_inset
     : shelf_depth;
 
 module shelf_blank() {
@@ -55,7 +58,7 @@ module shelf_blank() {
             [0, 0, outer_face_top], // SW corner top of W face
             [outer_face_outset, outer_face_outset, lip_top_height], // SW outer corner of top of lip
             [tray_edge_inset, tray_edge_inset, lip_top_height], // SW inner corner of top lip
-            [tray_edge_inset, tray_edge_inset, shelf_thickness], // SW corner of shelf top surface
+            [tray_inner_inset, tray_inner_inset, shelf_thickness], // SW corner of shelf top surface
 
             // NW corner
             [outer_face_outset, actual_shelf_depth, 0],
@@ -63,7 +66,7 @@ module shelf_blank() {
             [0, actual_shelf_depth-outer_face_outset, outer_face_top],
             [outer_face_outset, actual_shelf_depth, lip_top_height],
             [tray_edge_inset, actual_shelf_depth-tray_edge_inset, lip_top_height],
-            [tray_edge_inset, actual_shelf_depth-tray_edge_inset, shelf_thickness],
+            [tray_inner_inset, actual_shelf_depth-tray_inner_inset, shelf_thickness],
 
             // NE corner
             [actual_shelf_width-outer_face_outset, actual_shelf_depth, 0],
@@ -71,7 +74,7 @@ module shelf_blank() {
             [actual_shelf_width, actual_shelf_depth-outer_face_outset, outer_face_top],
             [actual_shelf_width-outer_face_outset, actual_shelf_depth, lip_top_height],
             [actual_shelf_width-tray_edge_inset, actual_shelf_depth-tray_edge_inset, lip_top_height],
-            [actual_shelf_width-tray_edge_inset, actual_shelf_depth-tray_edge_inset, shelf_thickness],
+            [actual_shelf_width-tray_inner_inset, actual_shelf_depth-tray_inner_inset, shelf_thickness],
 
             // SE corner
             [actual_shelf_width-outer_face_outset, outer_face_outset, 0],
@@ -79,7 +82,7 @@ module shelf_blank() {
             [actual_shelf_width, 0, outer_face_top],
             [actual_shelf_width-outer_face_outset, outer_face_outset, lip_top_height],
             [actual_shelf_width-tray_edge_inset, tray_edge_inset, lip_top_height],
-            [actual_shelf_width-tray_edge_inset, tray_edge_inset, shelf_thickness]
+            [actual_shelf_width-tray_inner_inset, tray_inner_inset, shelf_thickness]
         ],
         faces = [
             [0, 6, 12, 18], // bottom face
