@@ -54,15 +54,15 @@ module shelf_blank() {
             [0, 0, outer_face_bottom], // SW corner bottom of W face
             [0, 0, outer_face_top], // SW corner top of W face
             [outer_face_outset, outer_face_outset, lip_top_height], // SW outer corner of top of lip
-            [lip_top_thickness, lip_top_thickness, lip_top_height], // SW inner corner of top lip
+            [tray_edge_inset, tray_edge_inset, lip_top_height], // SW inner corner of top lip
             [tray_edge_inset, tray_edge_inset, shelf_thickness], // SW corner of shelf top surface
-            
+
             // NW corner
             [outer_face_outset, actual_shelf_depth, 0],
             [0, actual_shelf_depth-outer_face_outset, outer_face_bottom],
             [0, actual_shelf_depth-outer_face_outset, outer_face_top],
             [outer_face_outset, actual_shelf_depth, lip_top_height],
-            [lip_top_thickness, actual_shelf_depth-lip_top_thickness, lip_top_height],
+            [tray_edge_inset, actual_shelf_depth-tray_edge_inset, lip_top_height],
             [tray_edge_inset, actual_shelf_depth-tray_edge_inset, shelf_thickness],
 
             // NE corner
@@ -70,7 +70,7 @@ module shelf_blank() {
             [actual_shelf_width, actual_shelf_depth-outer_face_outset, outer_face_bottom],
             [actual_shelf_width, actual_shelf_depth-outer_face_outset, outer_face_top],
             [actual_shelf_width-outer_face_outset, actual_shelf_depth, lip_top_height],
-            [actual_shelf_width-lip_top_thickness, actual_shelf_depth-lip_top_thickness, lip_top_height],
+            [actual_shelf_width-tray_edge_inset, actual_shelf_depth-tray_edge_inset, lip_top_height],
             [actual_shelf_width-tray_edge_inset, actual_shelf_depth-tray_edge_inset, shelf_thickness],
 
             // SE corner
@@ -78,7 +78,7 @@ module shelf_blank() {
             [actual_shelf_width, 0, outer_face_bottom],
             [actual_shelf_width, 0, outer_face_top],
             [actual_shelf_width-outer_face_outset, outer_face_outset, lip_top_height],
-            [actual_shelf_width-lip_top_thickness, lip_top_thickness, lip_top_height],
+            [actual_shelf_width-tray_edge_inset, tray_edge_inset, lip_top_height],
             [actual_shelf_width-tray_edge_inset, tray_edge_inset, shelf_thickness]
         ],
         faces = [
