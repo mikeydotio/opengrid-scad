@@ -27,8 +27,6 @@ snap_fitment = 0.66;
 
 shelf_thickness = 5;
 shelf_lip_height = 5;
-min_snaps = 1;
-max_snaps = floor(actual_shelf_width/28);
 outer_face_outset = 3;
 outer_face_bottom = 3;
 outer_face_top = 5;
@@ -455,15 +453,10 @@ module snap_chamfer() {
                 );
 };
 
-total_width = actual_shelf_width;
-
 cell_count = floor(actual_shelf_width / cell_width);
 
 even_cell_count = (cell_count % 2 == 0) ? true : false;
 snap_count = (even_cell_count) ? floor(cell_count / 2) : floor(cell_count / 2) + 1;
-even_snap_count = (snap_count % 2 == 0) ? true : false;
-gap_count = (even_cell_count) ? floor(cell_count / 2) - 1 : floor(cell_count/2);
-gap_width = cell_width;
 
 snap_remainder = actual_shelf_width - (cell_count * cell_width);
 outer_snap_offset = even_cell_count ? (snap_remainder + cell_width)/2 : snap_remainder / 2;
