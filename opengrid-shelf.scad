@@ -84,30 +84,32 @@ module shelf_blank() {
         ],
         faces = [
             [0, 6, 12, 18], // bottom face
-            
+
             [0, 1, 7, 6], // W outer bottom chamfer
             [1, 2, 8, 7], // W outer face
             [2, 3, 9, 8], // W outer top chamfer
             [3, 4, 10, 9], // W lip top face
             [4, 5, 11, 10], // W inner chamfer
-            
-            [6, 7, 8, 9, 15, 14, 13, 12], // N face
+
+            [6, 7, 13, 12], // N outer bottom chamfer
+            [7, 8, 14, 13], // N outer face
+            [8, 9, 15, 14], // N outer top chamfer
             [9, 10, 16, 15], // N lip top face
-            [11, 10, 16, 17], // N inner chamfer
-            
+            [10, 11, 17, 16], // N inner chamfer
+
             [12, 13, 19, 18], // E outer bottom chamfer
             [13, 14, 20, 19], // E outer face
             [14, 15, 21, 20], // E outer top chamfer
             [15, 16, 22, 21], // E lip top face
             [16, 17, 23, 22], // E inner chamfer
-            
+
             [18, 19, 1, 0], // S outer bottom chamfer
             [19, 20, 2, 1], // S outer face
             [20, 21, 3, 2], // S outer top chamfer
             [21, 22, 4, 3], // S lip top face
             [22, 23, 5, 4], // S inner chamfer
-            
-            [5, 11, 17, 23] // top face
+
+            [5, 23, 17, 11] // top face
         ]
     );
 };
