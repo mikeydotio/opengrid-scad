@@ -94,7 +94,7 @@ module bottom_slot_cutouts(snap_type) {
 
     if (snap_type == "Directional") {
         rotate([13, 0, 0])
-            translate([6.75, slot_inset,-7])
+            translate([6.75, slot_inset+0.8,-7])
                 scale([1, 1, 2])
                     bottom_slot_cutout_template();
     } else {
